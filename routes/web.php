@@ -18,7 +18,7 @@ Route::get('index', function () {
     session()->put(['role' => 'user']);
     //отдать страницу обычного пользователя
     return view('main');
-});
+})->name('index');
 
 
 
@@ -47,4 +47,7 @@ Route::group(['middleware' => 'role'], function () {
 
 //работа с вопросами
     Route::resource('question', 'QuestionController', ['except' => 'show', 'index']);
+
+    Route::get('category/{category}/question/create', 'QuestionController@create')->name('question.create');
+
     Route::get('category/{id}/question', 'QuestionController@lister')->name('category.question');

@@ -4,7 +4,7 @@
     <div class="panel panel-success">
         <div class="panel-heading lead">
             {{ $category->name }}
-            <a class="btn btn-sm btn-success pull-right" href="{{ route('question.create') }}">Добавить вопрос </a>
+            <a class="btn btn-sm btn-success pull-right" href="{{ route('question.create', ['category' => $category]) }}">Добавить вопрос </a>
         </div>
         <table class="table table-condensed" style="font-size: 14px;">
             <tbody>

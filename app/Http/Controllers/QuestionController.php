@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -18,9 +19,13 @@ class QuestionController extends Controller
     }
 
     //создаем новый вопрос
-    public function create()
+    public function create(Category $category)
     {
-        return view('templates.question.create');
+        $categories = Category::all();
+        if ((session()->get('role')) === 'admin') {
+            $user = User::find(session()->get('id'));
+            return view('templates.question.create', ['category' => $category, 'categories' => $categories, 'user' => $user]);
+        } else return view('templates.question.create', ['category' => $category, 'categories' => $categories]);
     }
     //сохраняет вопрос
     public function store(Request $request)
