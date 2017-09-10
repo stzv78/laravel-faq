@@ -34,20 +34,8 @@ class UserController extends Controller
     }
 
     public function create() {
-        //проверяем права пользователя
-        //if ((session()->get('role')) === 'admin') {
             //отдаем форму регистрации
             return view('register');
-       // } else {
-       //     $data = [
-       //         'class' => 'danger',
-       //         'message' => 'У Вас нет прав для создания новых администраторов!',
-       //         'text' => 'Вернуться',
-       //         'route' => '/index'
-       //     ];
-            // Отдаем страницу с сообщением
-        //    return view('templates.message', $data);
-
     }
 
     //сохраняем данные нового администратора

@@ -40,8 +40,9 @@
     </div>
 </nav>
 
+<div class = "container-fluid">
 @yield('content')
-
+</div>
 <!-- Футер -->
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">

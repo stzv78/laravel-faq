@@ -27,10 +27,10 @@ class QuestionController extends Controller
             return view('templates.question.create', ['category' => $category, 'categories' => $categories, 'user' => $user]);
         } else return view('templates.question.create', ['category' => $category, 'categories' => $categories]);
     }
-    //сохраняет вопрос
+    //сохраняем вопрос
     public function store(Request $request)
     {
-        //есть ли такая категория в БД
+        //есть ли такой вопрос в БД
         if (Question::where('description', $request->description)->first()) {
             $data = [
                 'class' => 'danger',
@@ -39,10 +39,10 @@ class QuestionController extends Controller
                 'route' => 'category.question'
             ];
         } else {
-            //пишем категорию в БД
+            //пишем вопрос в БД, cnfdbv cnfnec 0 -- "не опубликован"
             Question::create($request->all());
             $data = [
-                'class' => 'success',
+               'class' => 'success',
                 'message' => 'Новый вопрос успешно создан!',
                 'text' => 'Ok',
                 'route' => 'category.question'
@@ -52,18 +52,49 @@ class QuestionController extends Controller
         return view('templates.message', $data);
     }
     //редактируем вопрос
-
-    //удаляем вопрос
+    public function edit($id)
+    {
+        $question = Question::findOrFail($id);
+        return view('templates.question.edit', ['question' => $question]);
+    }
 
     //обновляем вопрос
+    public function update(Request $request, Question $question)
+    {
+        $question->update($request->all());
+        $data = [
+            'class' => 'success',
+            'message' => 'Вопрос успешно изменен!',
+            'text' => 'Ok',
+            'route' => 'category.question'
+        ];
+        return view('templates.message', $data);
+    }
 
+    public function destroy(Question $question)
+    {
+        Category::destroy($question->id);
+        $data = [
+            'class' => 'success',
+            'message' => 'Вопрос успешно удален!',
+            'text' => 'Ok',
+            'route' => '/category'
+        ];
+        return view('templates.message', $data);
+    }
 
+    public function changeStatusQuestion($id, $status)
+    {
+        //меняем статус вопроса
+        $question = Question::find($id);
+        $question->status = $status;
+        $question->save();
+
+    }
+    //список вопросов по категории и статусу
     public function getStatusQuestion($id, $status)
     {
-        //список вопросов по категории и статусу
         $result = Category::find($id)->question()->where('status', '=', $status)->get();
         dd($result);
     }
-
-
 }
