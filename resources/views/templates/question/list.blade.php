@@ -4,7 +4,8 @@
     <div class="panel panel-success">
         <div class="panel-heading lead">
             {{ $category->name }}
-            <a class="btn btn-sm btn-success pull-right" href="{{ route('question.create', ['category' => $category]) }}">Добавить вопрос </a>
+            <a class="btn btn-sm btn-success pull-right"
+               href="{{ route('question.create', ['category' => $category]) }}">Добавить вопрос </a>
         </div>
         <table class="table table-condensed" style="font-size: 14px;">
             <tbody>
@@ -20,7 +21,7 @@
                         @elseif ($question->status === 1)
                             <td>Опубликован
                                 <a class="btn btn-default btn-sm" style="width: 100px" href="">Скрыть</a></td>
-                                    @elseif($question->status === 0)
+                        @elseif($question->status === 0)
                             <td>Скрыт
                                 <a class="btn btn-success btn-sm" style="width: 100px" href="">Опубликовать</a></td>
                         @endif
@@ -30,7 +31,8 @@
                                 <a class="btn btn-info btn-sm" href=""><i class="glyphicon glyphicon-pencil"></i></a>
                                 <input type="hidden" name="_method" value="delete"/>
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                <button type="submit" class="btn btn-sm btn-danger " value=""><i class="glyphicon glyphicon-trash"></i></button>
+                                <button type="submit" class="btn btn-sm btn-danger " value=""><i
+                                            class="glyphicon glyphicon-trash"></i></button>
                             </form>
                         </td>
                     </tr>

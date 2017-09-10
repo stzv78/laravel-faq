@@ -6,14 +6,16 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">Изменить пароль</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('admin.update', ['id' => $user->id] )}}">
+                        <form class="form-horizontal" method="POST"
+                              action="{{ route('admin.update', ['id' => $user->id] )}}">
                             {{ csrf_field() }}
 
                             <div class="form-group">
                                 <label for="name" class="col-md-4 control-label">Администратор:</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ $user->name }}">
+                                    <input id="name" type="text" class="form-control" name="name"
+                                           value="{{ $user->name }}">
                                 </div>
                             </div>
 

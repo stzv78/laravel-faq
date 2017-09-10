@@ -26,6 +26,10 @@ class User extends Model
         $pass = hash('ripemd128', "$salt1$pass$salt2");
         return $pass;
     }
+    public function answer()
+    {
+        return $this->hasOne('App\Models\Answer');
+    }
 }
 
 

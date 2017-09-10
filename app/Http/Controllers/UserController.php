@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     //авторизация администратора
-    public function check(Request $request) {
+    public function check(Request $request)
+    {
         $user = User::check($request);
         if ($user) {
             //пишем администратора в сессию
@@ -27,19 +28,23 @@ class UserController extends Controller
             return view('templates.message', $data);
         }
     }
+
     //все администраторы
-    public function index() {
+    public function index()
+    {
         $users = User::latest()->get();
-        return view('templates.admin.list',  ['users' => $users]);
+        return view('templates.admin.list', ['users' => $users]);
     }
 
-    public function create() {
-            //отдаем форму регистрации
-            return view('register');
+    public function create()
+    {
+        //отдаем форму регистрации
+        return view('register');
     }
 
     //сохраняем данные нового администратора
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         //есть ли такой e-mail в БД
         if (User::where('email', $request->email)->first()) {
             $data = [
@@ -63,13 +68,15 @@ class UserController extends Controller
     }
 
     //отдаем форму для смены пароля администратора
-    public function edit($id) {
+    public function edit($id)
+    {
         $user = User::findOrFail($id);
         return view('templates.admin.edit', ['user' => $user]);
     }
 
     //обновляем пароль (и имя при необходимости) в бд
-    public function update(Request $request, User $user) {
+    public function update(Request $request, User $user)
+    {
 
         if ($user) {
             $user->name = $request->name;
@@ -94,7 +101,8 @@ class UserController extends Controller
         return view('templates.message', $data);
     }
 
-    public function destroy(User $user) {
+    public function destroy(User $user)
+    {
 
         User::destroy($user->id);
         $data = [
@@ -103,7 +111,7 @@ class UserController extends Controller
             'text' => 'Ok',
             'route' => '/admin'
         ];
-    return view('templates.message', $data);
+        return view('templates.message', $data);
     }
 
     //выход администратора

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Auth\SessionGuard;
-use Illuminate\Http\Request;
 use function session;
 
 class HomeController extends Controller

@@ -6,14 +6,16 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">Изменить категорию</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('category.update', ['id' => $category->id] )}}">
+                        <form class="form-horizontal" method="POST"
+                              action="{{ route('category.update', ['id' => $category->id] )}}">
                             {{ csrf_field() }}
 
                             <div class="form-group">
                                 <label for="name" class="col-md-4 control-label">Категория:</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ $category->name }}">
+                                    <input id="name" type="text" class="form-control" name="name"
+                                           value="{{ $category->name }}">
                                 </div>
                             </div>
 

@@ -12,6 +12,7 @@ class Question extends Model
     {
         return $this->hasOne('App\Models\Answer');
     }
+
     public function category()
     {
         return $this->belongsTo('App\Models\Category');

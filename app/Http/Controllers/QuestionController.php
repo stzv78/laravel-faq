@@ -24,8 +24,11 @@ class QuestionController extends Controller
         $categories = Category::all();
         if ((session()->get('role')) === 'admin') {
             $user = User::find(session()->get('id'));
-            return view('templates.question.create', ['category' => $category, 'categories' => $categories, 'user' => $user]);
-        } else return view('templates.question.create', ['category' => $category, 'categories' => $categories]);
+            $data = [ 'category' => $category, 'categories' => $categories, 'user' => $user ];
+        } else
+            $user = null;
+            $data = [ 'category' => $category, 'categories' => $categories ];
+        return view('templates.question.create', $data);
     }
     //сохраняем вопрос
     public function store(Request $request)

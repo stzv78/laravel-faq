@@ -18,6 +18,7 @@ class CreateAnswersTable extends Migration
             $table->text('answer_text');
             //индексные поля -- участвуют в запросах
             $table->integer('user_id')->unsigned();
+
             //связь один-ко многим с таблицей категорий (тем) вопросов
             $table->integer('question_id')->unsigned()->index();
             $table->foreign('question_id')

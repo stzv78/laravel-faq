@@ -18,8 +18,9 @@ class Category extends Model
     {
         $this->answers = $this->question()->count();
         foreach ($this->question()->get() as $question) {
-            if (isset($question->answer))
+            if (isset($question->answer)) {
                 $this->answers--;
+            }
         }
         return $this->answers;
     }
