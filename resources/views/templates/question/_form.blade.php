@@ -35,8 +35,8 @@
                 @endif
             </div>
             <div class="form-group">
-                                <textarea class="form-control" name="description" placeholder="Ваш вопрос"
-                                          required></textarea>
+                <textarea class="form-control" name="description" placeholder="Ваш вопрос"
+                          required></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Отправить</button>
             <input type="hidden" name="_token" value="{{csrf_token()}}">

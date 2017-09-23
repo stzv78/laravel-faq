@@ -11,6 +11,18 @@ class PageController extends Controller
         session()->put(['role' => 'user']);
         $categories = Category::all();
         //отдать страницу обычного пользователя
-        return view('main', ['categories' => $categories]);
+        //return view('main', ['categories' => $categories]);
+        //не забыть поменять
+        return view('admin', ['categories' => $categories]);
+    }
+
+    public function redirected()
+    {
+        return redirect('index');
+    }
+
+    public function login()
+    {
+        return view('login');
     }
 }

@@ -42,7 +42,7 @@ class QuestionController extends Controller
                 'route' => 'category.question'
             ];
         } else {
-            //пишем вопрос в БД, cnfdbv cnfnec 0 -- "не опубликован"
+            //пишем вопрос в БД, устанавливаем статус 0 -- "не опубликован"
             Question::create($request->all());
             $data = [
                'class' => 'success',
@@ -86,18 +86,10 @@ class QuestionController extends Controller
         return view('templates.message', $data);
     }
 
-    public function changeStatusQuestion($id, $status)
+    public function changeStatusQuestion(Question $question, $status)
     {
         //меняем статус вопроса
-        $question = Question::find($id);
         $question->status = $status;
         $question->save();
-
-    }
-    //список вопросов по категории и статусу
-    public function getStatusQuestion($id, $status)
-    {
-        $result = Category::find($id)->question()->where('status', '=', $status)->get();
-        dd($result);
     }
 }

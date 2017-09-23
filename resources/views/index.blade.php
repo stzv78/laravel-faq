@@ -13,6 +13,10 @@
         .accordion-toggle:before{content:"";position:absolute;right:0;top:17px;width:0;height:0;border-top:5px solid #999;border-left:5px solid rgba(0,0,0,0);border-right:5px solid rgba(0,0,0,0);}
         .accordion-toggle.active:before{display:none;}
         .navbar-default .navbar-text {color: #ff0000;}
+
+        .hre:a:hover {
+        rgba(0, 0, 0, 0);
+        }
     </style>
 </head>
 <body>

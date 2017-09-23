@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Http\Request;
+
 
 class UserController extends Controller
 {
@@ -14,7 +16,8 @@ class UserController extends Controller
         if ($user) {
             //пишем администратора в сессию
             $request->session()->put(['id' => $user->id, 'name' => $user->name, 'role' => 'admin']);
-            return view('main');//перенаправляем на Главную страницу
+            $categories = Category::all();
+            return view('admin', ['categories' => $categories]);//отдаем Главную страницу администратора
         } else {
             //пишем пользователя в сессию
             $request->session()->put(['role' => 'user']);
