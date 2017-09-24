@@ -14,11 +14,16 @@
                                 <label for="name" class="col-md-4 control-label">Администратор:</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name"
-                                           value="{{ $user->name }}">
+                                    {{ $user->name }}
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="email" class="col-md-4 control-label">Login:</label>
 
+                                <div class="col-md-6">
+                                    {{ $user->email }}
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label for="password" class="col-md-4 control-label">Новый пароль:</label>

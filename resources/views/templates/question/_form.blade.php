@@ -25,10 +25,9 @@
 
                     <select name="category_id" class="form-control">
                         @foreach($categories as $categori)
-                            <option value="{{ $category->id or $categori->id}}">{{ $category->name or $categori->name }}</option>
+                            <option value="{{ isset($user) ? $category->id : $categori->id}}">{{ isset($user) ? $category->name : $categori->name }}</option>
                         @endforeach
                     </select>
-
             </div>
 
             <div class="form-group">

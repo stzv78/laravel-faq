@@ -22,21 +22,24 @@ Route::group(['middleware' => 'role'], function () {
 
     //работа с категориями
     Route::resource('category', 'CategoryController', ['except' => 'show']);
+
     //работа с вопросами в категориях
+    Route::get('category/{category}/question/create', 'QuestionController@create')->name('question.create');
     Route::get('category/{id}/question', 'QuestionController@lister')->name('category.question');
+    Route::get('question/edit/{id}', 'QuestionController@edit')->name('question.edit');
 
     //работа с ответами
     Route::resource('answer', 'AnswerController', ['except' => 'show', 'index']);
     Route::get('answer/{question}/create', 'AnswerController@create')->name('answer.create');
 
+    //смена статуса вопроса (скрытый-опубликованный)
+    Route::get('question/{question}/status/{status}',
+        'QuestionController@changeStatusQuestion')->name('question.status');
+
 });
 
-
 //работа с вопросами
-Route::resource('question', 'QuestionController', ['except' => 'show', 'index']);
-//смена статуса вопроса (скрытый-опубликованный)
-Route::get('question/{question}/{status}', 'QuestionController@changeStatusQuestion')->name('question.status');
+Route::resource('question', 'QuestionController', ['except' => 'show']);
 
-Route::get('category/{category}/question/create', 'QuestionController@create')->name('question.create');
 
 

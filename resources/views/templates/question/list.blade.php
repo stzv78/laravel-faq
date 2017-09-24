@@ -24,10 +24,14 @@
                                        href="{{route('answer.create', ['question' => $question])}}"> Ответить</a></td>
                             @elseif ($question->status === 2)
                                 <td>Опубликован</td>
-                                <td><a class="btn btn-sm btn-default" style="width: 100px" href=""> Скрыть</a></td>
+                                <td><a class="btn btn-sm btn-default" style="width: 100px"
+                                       href="{{ route('question.status', ['question' => $question, 'status'=> '1'])}}">
+                                        Скрыть</a></td>
                             @elseif($question->status === 1)
                                 <td>Скрыт</td>
-                                <td><a class="btn btn-success btn-sm" style="width: 100px" href=""> Опубликовать</a>
+                                <td><a class="btn btn-success btn-sm" style="width: 100px"
+                                       href="{{ route('question.status', ['question' => $question, 'status'=> '2'])}}">
+                                        Опубликовать</a>
                                 </td>
                             @endif
                             <td style="text-align: center">

@@ -28,19 +28,26 @@ class AnswerController extends Controller
                 $answer->question->status = 1;
             }
             $answer->question->save();
+            return redirect(route('question.index'));
         } else {
             echo "Ответ уже существует!";
+            return redirect(route('question.index'));
         }
-        //    $data = [
-        //        'class' => 'success',
-        //        'message' => 'Новый вопрос успешно создан!',
-        //        'text' => 'Ok',
-        //        'route' => 'category.question'
-        //    ];
-        //
-        // Отдаем страницу с сообщением
-        //return view('templates.message', $data);
+
     }
 
+    public function edit($id)
+    {
+        $answer = Answer::findOrFail($id);
+        $question = $answer->question;
+        $data = ['question' => $question, 'answer' => $answer];
+        return view('templates.answer.edit', $data);
+    }
+
+    public function update(Request $request, Answer $answer)
+    {
+        $answer->update($request->all());
+        return redirect(route('question.index'));
+    }
 
 }

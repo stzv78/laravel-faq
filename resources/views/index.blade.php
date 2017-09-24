@@ -33,7 +33,8 @@
                     <div class="pull-left btn-group">
                         <a class="btn btn-success navbar-btn " href="{{ route('category.index') }}"> Управление
                             категориями </a>
-                        <a class="btn btn-info navbar-btn " href="{{ route('index') }}"> Управление вопросами </a>
+                        <a class="btn btn-info navbar-btn " href="{{ route('question.index') }}"> Управление
+                            вопросами </a>
                     </div>
 
                     <li><a href="{{  route ('register') }}"> Новый администратор</a></li>

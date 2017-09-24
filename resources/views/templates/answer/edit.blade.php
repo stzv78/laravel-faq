@@ -4,9 +4,10 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-primary">
-                    <div class="panel-heading">Ответить пользователю</div>
+                    <div class="panel-heading">Редактировать ответ</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('answer.store') }}">
+                        <form class="form-horizontal" method="POST"
+                              action="{{ route('answer.update', ['id' => $answer->id]) }}">
                             <div class="form-group">
 
                                 <div class="col-md-8 col-md-offset-3">
@@ -26,21 +27,16 @@
                                 <label for="answer_text" class="col-md-2 col-md-offset-1">Ответ:</label>
 
                                 <div class="col-md-8">
-                                    <textarea class="form-control" name="answer_text" placeholder="Ваш ответ" required>
+                                    <textarea class="form-control" name="answer_text" value="">{{ $answer->answer_text }}
                                </textarea>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-3">
-                                    <input type="checkbox" name="status" value="2"> Опубликовать</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-8 col-md-offset-3">
+                                    {{ method_field('PUT') }}
                                     <button type="submit" class="btn btn-primary">Отправить</button>
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                    <input type="hidden" name="user_id" value="{{$user->id}}">
                                     <input type="hidden" name="question_id" value="{{$question->id}}">
                                     <a href="{{ route('question.index') }}" class="cancel"> Отмена</a>
                                 </div>

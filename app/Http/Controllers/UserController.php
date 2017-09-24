@@ -17,7 +17,7 @@ class UserController extends Controller
             //пишем администратора в сессию
             $request->session()->put(['id' => $user->id, 'name' => $user->name, 'role' => 'admin']);
             $categories = Category::all();
-            return view('admin', ['categories' => $categories]);//отдаем Главную страницу администратора
+            return view('main', ['categories' => $categories]);//отдаем Главную страницу администратора
         } else {
             //пишем пользователя в сессию
             $request->session()->put(['role' => 'user']);
@@ -78,14 +78,11 @@ class UserController extends Controller
     }
 
     //обновляем пароль (и имя при необходимости) в бд
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-
+        $user = User::findOrFail($id);
         if ($user) {
-            $user->name = $request->name;
             $user->password = $user->hash($request->password);
-            //если нужно менять и логин(e-mail)
-            //$user->email = $request->email;
             $user->save();
             $data = [
                 'class' => 'success',
@@ -104,14 +101,14 @@ class UserController extends Controller
         return view('templates.message', $data);
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        User::destroy($user->id);
+        User::destroy($id);
         $data = [
             'class' => 'success',
             'message' => 'Администратор успешно удален!',
             'text' => 'Ok',
-            'route' => 'admin'
+            'route' => '/admin'
         ];
         return view('templates.message', $data);
     }

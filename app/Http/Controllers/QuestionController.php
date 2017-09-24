@@ -5,10 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use App\Models\Category;
 use App\Models\User;
+use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
+    public function index()
+    {
+        $categories = Category::all();
+        $status = '2';
+        $questions = Question::where('status', '=', 0)->orderBy('created_at', 'DESC')->get();
+        return view('templates.question.public',
+            ['categories' => $categories, 'status' => $status, 'questions' => $questions]);
+    }
     public function lister($id)
     {
         $category = Category::find($id);
@@ -41,16 +50,17 @@ class QuestionController extends Controller
                 'class' => 'danger',
                 'message' => 'Такой вопрос уже существует!',
                 'text' => 'Ok',
-                'route' => '/category'
+                'route' => '/index'
             ];
         } else {
             //пишем вопрос в БД со статусом 0 -- "не опубликован"
             Question::create($request->all());
+            $route = (session()->get('role') === 'admin') ? '/question/noanswered' : '/index';
             $data = [
                'class' => 'success',
                 'message' => 'Новый вопрос успешно создан!',
                 'text' => 'Ok',
-                'route' => '/category'
+                'route' => $route
             ];
         }
         // Отдаем страницу с сообщением
@@ -95,5 +105,6 @@ class QuestionController extends Controller
         //меняем статус вопроса
         $question->status = $status;
         $question->save();
+        return redirect(route('question.index'));
     }
 }
