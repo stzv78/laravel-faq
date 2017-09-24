@@ -12,10 +12,12 @@ class QuestionController extends Controller
     public function lister($id)
     {
         $category = Category::find($id);
+        $categories = Category::all();
         $questions = $category->question()->orderBy('created_at', 'DESC')->get();
         //потом добавить пагинацию
         //->paginate(10),
-        return view('templates.question.list', ['questions' => $questions, 'category' => $category]);
+        return view('templates.question.list',
+            ['questions' => $questions, 'category' => $category, 'categories' => $categories]);
     }
 
     //создаем новый вопрос
@@ -24,10 +26,10 @@ class QuestionController extends Controller
         $categories = Category::all();
         if ((session()->get('role')) === 'admin') {
             $user = User::find(session()->get('id'));
-            $data = [ 'category' => $category, 'categories' => $categories, 'user' => $user ];
-        } else
+        } else {
             $user = null;
-            $data = [ 'category' => $category, 'categories' => $categories ];
+        }
+        $data = ['category' => $category, 'categories' => $categories, 'user' => $user];
         return view('templates.question.create', $data);
     }
     //сохраняем вопрос
@@ -39,16 +41,16 @@ class QuestionController extends Controller
                 'class' => 'danger',
                 'message' => 'Такой вопрос уже существует!',
                 'text' => 'Ok',
-                'route' => 'category.question'
+                'route' => '/category'
             ];
         } else {
-            //пишем вопрос в БД, устанавливаем статус 0 -- "не опубликован"
+            //пишем вопрос в БД со статусом 0 -- "не опубликован"
             Question::create($request->all());
             $data = [
                'class' => 'success',
                 'message' => 'Новый вопрос успешно создан!',
                 'text' => 'Ok',
-                'route' => 'category.question'
+                'route' => '/category'
             ];
         }
         // Отдаем страницу с сообщением
@@ -58,7 +60,9 @@ class QuestionController extends Controller
     public function edit($id)
     {
         $question = Question::findOrFail($id);
-        return view('templates.question.edit', ['question' => $question]);
+        $categories = Category::all();
+        $data = ['category' => $question->category, 'categories' => $categories, 'question' => $question];
+        return view('templates.question.edit', $data);
     }
 
     //обновляем вопрос
@@ -69,14 +73,14 @@ class QuestionController extends Controller
             'class' => 'success',
             'message' => 'Вопрос успешно изменен!',
             'text' => 'Ok',
-            'route' => 'category.question'
+            'route' => '/category'
         ];
         return view('templates.message', $data);
     }
 
     public function destroy(Question $question)
     {
-        Category::destroy($question->id);
+        Question::destroy($question->id);
         $data = [
             'class' => 'success',
             'message' => 'Вопрос успешно удален!',

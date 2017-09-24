@@ -63,7 +63,7 @@ class UserController extends Controller
                 'class' => 'success',
                 'message' => 'Новая учетная запись успешно создана!',
                 'text' => 'Ok',
-                'route' => '/admin'
+                'route' => 'admin'
             ];
         }
         // Отдаем страницу с сообщением
@@ -106,13 +106,12 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-
         User::destroy($user->id);
         $data = [
             'class' => 'success',
             'message' => 'Администратор успешно удален!',
             'text' => 'Ok',
-            'route' => '/admin'
+            'route' => 'admin'
         ];
         return view('templates.message', $data);
     }

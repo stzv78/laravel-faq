@@ -33,7 +33,8 @@
                             <td style="text-align: center">
                                 <form method="POST"
                                       action="{{ route ('question.destroy', ['question' => $question]) }}">
-                                    <a class="btn btn-info " href=""><i
+                                    <a class="btn btn-info "
+                                       href="{{ route('question.edit', ['id' => $question->id]) }}"><i
                                                 class="glyphicon glyphicon-pencil"></i></a>
                                     <input type="hidden" name="_method" value="delete"/>
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">

@@ -2,7 +2,7 @@
 
 Route::get('/', 'PageController@redirected');
 Route::get('index', 'PageController@index')->name('index');
-Route::get('log', 'PageController@login');
+Route::get('log', 'PageController@login')->name('log');
 
 //впустить администратора в систему
 Route::post('admin/login', 'UserController@check')->name('admin.login');
@@ -20,15 +20,17 @@ Route::group(['middleware' => 'role'], function () {
     //выпустить администратоора
     Route::get('admin/logout', 'UserController@logout')->name('admin.logout');
 
+    //работа с категориями
+    Route::resource('category', 'CategoryController', ['except' => 'show']);
+    //работа с вопросами в категориях
+    Route::get('category/{id}/question', 'QuestionController@lister')->name('category.question');
+
     //работа с ответами
     Route::resource('answer', 'AnswerController', ['except' => 'show', 'index']);
     Route::get('answer/{question}/create', 'AnswerController@create')->name('answer.create');
 
 });
 
-
-//работа с категориями
-Route::resource('category', 'CategoryController', ['except' => 'show']);
 
 //работа с вопросами
 Route::resource('question', 'QuestionController', ['except' => 'show', 'index']);
@@ -37,4 +39,4 @@ Route::get('question/{question}/{status}', 'QuestionController@changeStatusQuest
 
 Route::get('category/{category}/question/create', 'QuestionController@create')->name('question.create');
 
-Route::get('category/{id}/question', 'QuestionController@lister')->name('category.question');
+

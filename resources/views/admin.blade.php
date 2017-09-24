@@ -1,27 +1,19 @@
 @extends('index')
 @section('content')
+
     <div class="row">
-        <!--Секция с вопросами-ответами-->
         <div class="col-md-9">
 
-            <ul class="nav nav-pills">
-                <li class="active dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        Вопросы пользователей
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a data-toggle="tab" href="#panel1">Опубликованные</a></li>
-                        <li><a data-toggle="tab" href="#panel2">Скрытые</a></li>
-                        <li><a data-toggle="tab" href="#panel3">Без ответа</a></li>
-                        <li><a data-toggle="tab" href="#panel4">Заблокированные</a></li>
-                    </ul>
-                </li>
-                <li><a data-toggle="tab" href="#panel5">Категории вопросов</a></li>
-                <li><a data-toggle="tab" href="#panel6">Администраторы сервиса</a></li>
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#panel1">Опубликованные вопросы</a></li>
+                <li><a data-toggle="tab" href="#panel2">Скрытые вопросы</a></li>
+                <li><a data-toggle="tab" href="#panel3">Вопросы без ответа</a></li>
+                <li><a data-toggle="tab" href="#panel4">Заблокированные вопросы</a></li>
             </ul>
 
+            <!--Секция с вопросами-ответами-->
             <div class="tab-content">
+
                 <div id="panel1" class="tab-pane fade in active">
                     <h4 style="text-align: center">Опубликованные вопросы</h4>
                 @foreach ($categories as $category)
@@ -150,20 +142,12 @@
                 </div>
                 <div id="panel4" class="tab-pane fade">
                     <h4 style="text-align: center">Заблокированные вопросы</h4>
-                    <p>Содержимое 4 панели...</p>
+                    <p></p>
                 </div>
-                <div id="panel5" class="tab-pane fade">
-                    <h4 style="text-align: center">Категории вопросов</h4>
-                    <p>Содержимое 5 панели...</p>
-                </div>
-                <div id="panel6" class="tab-pane fade">
-                    <h4 style="text-align: center">Администраторы сервиса</h4>
-                    <p>Содержимое 6 панели...</p>
-                </div>
+
             </div>
-
-
         </div>
+
 
         <!-- Правая часть -->
         <div class="col-md-3">

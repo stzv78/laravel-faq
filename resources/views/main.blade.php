@@ -1,10 +1,9 @@
 @extends('index')
 @section('content')
-    <div class="row">
-        <!--Секция с вопросами-ответами-->
+    <!--Секция с вопросами-ответами-->
         <div class="col-md-9">
             @foreach ($categories as $category)
-                @if ($category->question()->where('status', '=', 1)->get()->count())
+                @if ($category->question()->where('status', '=', 2)->get()->count())
                     <div class="panel panel-default">
                         <!--Для каждой категории, если есть вопросы с ответами-->
                         <div class="panel-heading">
@@ -14,7 +13,7 @@
                         </div>
                         <div class="panel-body">
                             <div>
-                                @foreach(($category->question()->where('status', '=', 1)->get()) as $question)
+                                @foreach(($category->question()->where('status', '=', 2)->get()) as $question)
                                     <div class="accordion">
                                         <!--Здесь вопрос -->
                                         <div class="accordion-toggle">
@@ -41,18 +40,12 @@
                 @endif
             <!-- Конец ряда -->
             @endforeach
-
         </div>
 
-        <!-- Левое меню -->
+    <!-- Правая часть -->
         <div class="col-md-3">
-        @if (isset($user))
-            @include('templates.question._form', ['category' => $category, 'categories' => $categories, 'user' => $user])
-        @else
-            @include('templates.question._form', ['category' => $category, 'categories' => $categories])
-        @endif
-        <!-- Конец левого меню -->
+        @include('templates.question._form', ['category' => $category, 'categories' => $categories])
+        <!-- Конец правой части -->
         </div>
-    </div>
     <!--Конец секции вопросов для пользователя-->
 @stop

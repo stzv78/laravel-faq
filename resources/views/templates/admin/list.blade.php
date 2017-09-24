@@ -24,7 +24,7 @@
                     <td class="">{{ $user->created_at }}</td>
                     <td class="">Всего ответов<span class="badge pull-right"></span></td>
                     <td class="" style="text-align: center">
-                        <form method="POST" action="{{  route('admin.destroy', ['id' => $user->id]) }}">
+                        <form method="POST" action="{{  route('admin.destroy', ['user' => $user]) }}">
                             <a class="btn btn-info btn-sm" href="{{ route('admin.edit', ['id' => $user->id]) }}"><i
                                         class="glyphicon glyphicon-pencil"></i></a>
                             <input type="hidden" name="_method" value="delete"/>

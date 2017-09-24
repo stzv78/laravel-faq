@@ -8,12 +8,11 @@ class PageController extends Controller
 {
     public function index()
     {
-        session()->put(['role' => 'user']);
         $categories = Category::all();
-        //отдать страницу обычного пользователя
-        //return view('main', ['categories' => $categories]);
-        //не забыть поменять
-        return view('admin', ['categories' => $categories]);
+        if (session()->get('role') !== 'admin') {
+            session()->put(['role' => 'user']);
+        }
+        return view('main', ['categories' => $categories]);
     }
 
     public function redirected()

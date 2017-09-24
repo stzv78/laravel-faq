@@ -24,43 +24,54 @@
 <nav class="navbar navbar-default navbar-inverse divider-vertical">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand nav navbar-nav" href="{{url('/index')}}">Сервис FAQ</a>
+            <a class="navbar-brand nav navbar-nav" href="{{route('index')}}">Сервис FAQ</a>
         </div>
 
         <div>
             <ul class="nav navbar-nav pull-right">
             @if (session()->get('role') === 'admin')
-                <li><a href="{{  route ('register') }}"> Новый администратор</a></li>
+                    <div class="pull-left btn-group">
+                        <a class="btn btn-success navbar-btn " href="{{ route('category.index') }}"> Управление
+                            категориями </a>
+                        <a class="btn btn-info navbar-btn " href="{{ route('index') }}"> Управление вопросами </a>
+                    </div>
+
+                    <li><a href="{{  route ('register') }}"> Новый администратор</a></li>
                 <li><a href="{{  route ('admin.list') }}"> Все администраторы</a></li>
+
                 <p class="active navbar-text "><span class="glyphicon glyphicon-user"></span> Администратор: {{ session()->get('name') }}</p>
-                <a class="btn btn-primary navbar-btn" href="{{  route ('admin.edit', ['id' => session()->get('id')]) }}"> Изменить пароль</a>
+                    <a class="btn btn-primary navbar-btn "
+                       href="{{  route ('admin.edit', ['id' => session()->get('id')]) }}"> Изменить пароль</a>
                 <a class="btn btn-danger navbar-btn" href="{{ route('admin.logout') }}"> Выйти </a>
             @else
                 <p class="active navbar-text"><span class="glyphicon glyphicon-user"></span> Гость </p>
-                <li><a href="{{ url ('/log') }}"> Вход для администратора</a></li>
+                    <li><a href="{{ route ('log') }}"> Вход для администратора</a></li>
             @endif
             </ul>
         </div>
     </div>
 </nav>
+<div>
 
-<div class = "container-fluid">
-@yield('content')
-</div>
+    <div class = "container-fluid">
+
+        @yield('content')
+
+    </div>
 <!-- Футер -->
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="#">GitHub</a></li>
+            <li class="active"><a href="https://github.com/stzv78/laravel-faq">GitHub</a></li>
         </ul>
     </div>
 </nav>
 <!-- Конец футера -->
 
 
-<!-- Конец документа -->
+    <!-- Конец документа -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>

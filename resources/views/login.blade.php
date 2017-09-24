@@ -35,7 +35,7 @@
                                     <button type="submit" class="btn btn-primary">
                                         Войти
                                     </button>
-                                    <a href="{{ url('/index') }}" class="btn btn-default">Отмена</a>
+                                    <a href="{{ route('index') }}" class="btn btn-default">Отмена</a>
 
                                     </input>
                                 </div>
