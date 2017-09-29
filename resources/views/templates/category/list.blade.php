@@ -16,6 +16,5 @@
     @include('templates.question._form', ['categories' => $categories])
     <!-- Конец правой части -->
     </div>
-    </div>
     <!--Конец секции с категориями-->
 @stop

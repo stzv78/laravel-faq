@@ -1,5 +1,18 @@
 @extends('index')
 @section('content')
+
+    @if(session()->has('success'))
+        <div class='alert alert-success fade in alert-dismissable'>
+            {{ session()->get('success') }}
+        </div>
+    @endif
+    @if(session()->has('error'))
+        <div class='alert alert-danger fade in alert-dismissable'>
+            {{ session()->get('error') }}
+        </div>
+    @endif
+
+
     <div class="col-md-9">
         <!-- Список вопросов -->
         <ol class="breadcrumb">
@@ -16,25 +29,27 @@
                 @if (isset($questions))
                     @foreach($questions as $question)
                         <tr>
-                            <td> {{ $question->description }} </td>
-                            <td> {{ $question->created_at }} </td>
+                            <td class="col-md-4"> {{ $question->description }} </td>
+                            <td class="col-md-2"> {{ $question->created_at }} </td>
                             @if (!$question->answer)
-                                <td>Ожидает ответа</td>
-                                <td><a class="btn btn-default btn-sm" style="width: 100px"
+                                <td class="col-md-2">Ожидает ответа</td>
+                                <td class="col-md-1">
+                                    <a class="btn btn-default btn-sm" style="width: 100px"
                                        href="{{route('answer.create', ['question' => $question])}}"> Ответить</a></td>
                             @elseif ($question->status === 2)
-                                <td>Опубликован</td>
-                                <td><a class="btn btn-sm btn-default" style="width: 100px"
+                                <td class="col-md-2">Опубликован</td>
+                                <td class="col-md-1">
+                                    <a class="btn btn-sm btn-default" style="width: 100px"
                                        href="{{ route('question.status', ['question' => $question, 'status'=> '1'])}}">
                                         Скрыть</a></td>
                             @elseif($question->status === 1)
-                                <td>Скрыт</td>
-                                <td><a class="btn btn-success btn-sm" style="width: 100px"
+                                <td class="col-md-1">Скрыт</td>
+                                <td class="col-md-1"><a class="btn btn-success btn-sm" style="width: 100px"
                                        href="{{ route('question.status', ['question' => $question, 'status'=> '2'])}}">
                                         Опубликовать</a>
                                 </td>
                             @endif
-                            <td style="text-align: center">
+                            <td style="text-align: center" class="col-sm-2">
                                 <form method="POST"
                                       action="{{ route ('question.destroy', ['question' => $question]) }}">
                                     <a class="btn btn-info "

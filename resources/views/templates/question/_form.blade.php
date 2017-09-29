@@ -14,7 +14,7 @@
 
                 @if ($errors->has('username'))
                     <div class="alert alert-danger">
-                        {{$errors->first('username') }}
+                        {{ $errors->first('username') }}
                     </div>
                 @endif
 
@@ -29,6 +29,7 @@
                            value="{{ old('email') }}" required>
                 @endif
             </div>
+
             @if ($errors->has('email'))
                 <div class="alert alert-danger">
                     {{ $errors->first('email') }}

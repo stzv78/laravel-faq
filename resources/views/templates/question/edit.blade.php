@@ -28,19 +28,33 @@
                                 <textarea class="form-control" name="description"
                                           value="" required>{{ $question->description }}</textarea>
                                 </div>
+                                @if ($errors->has('description'))
+                                    <div class="alert alert-danger">
+                                        {{ $errors->first('description') }}
+                                    </div>
+                                @endif
                             </div>
 
-                            <div class="form-group">
-                                <label class="col-md-4">Переместить в категорию:</label>
-                                <div class="col-md-offset-4">
-                                    <select name="category_id" class="form-control">
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
+                        <div>
+                            <div class="accordion">
+                                <div class="accordion-toggle">
+                                   <a class="col-md-offset-4" data-toggle="collapse" data-parent="#collapse-group"
+                                                               href="#1">Переместить в категорию</a>
+                                </div>
+
+                                <div id="1" class="panel-collapse collapse">
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4">
+                                            <select name="category_id" class="form-control">
+                                                @foreach($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
+                        </div>
                             <div class="form-group col-md-offset-4">
                                 {{ method_field('PUT') }}
                                 <button type="submit" class="btn btn-primary">Изменить</button>

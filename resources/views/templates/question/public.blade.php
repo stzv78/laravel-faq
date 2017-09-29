@@ -1,14 +1,25 @@
 @extends('index')
 @section('content')
 
+    @if(session()->has('success'))
+        <div class='alert alert-success fade in alert-dismissable'>
+            {{ session()->get('success') }}
+        </div>
+    @endif
+    @if(session()->has('error'))
+        <div class='alert alert-danger fade in alert-dismissable'>
+            {{ session()->get('error') }}
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-md-9">
 
             <ul class="nav nav-tabs">
-                <li class="{{ $status =='2' ? 'active' : ''}}"><a data-toggle="tab" href="#2">Опубликованные вопросы</a>
+                <li class="{{ $status ==='2' ? 'active' : ''}}"><a data-toggle="tab" href="#2">Опубликованные вопросы</a>
                 </li>
-                <li class="{{ $status =='1' ? 'active' : ''}}"><a data-toggle="tab" href="#1">Скрытые вопросы</a></li>
-                <li class="{{ $status =='0' ? 'active' : ''}}"><a data-toggle="tab" href="#0">Вопросы без ответа</a>
+                <li class="{{ $status ==='1' ? 'active' : ''}}"><a data-toggle="tab" href="#1">Скрытые вопросы</a></li>
+                <li class="{{ $status ==='0' ? 'active' : ''}}"><a data-toggle="tab" href="#0">Вопросы без ответа</a>
                 </li>
             </ul>
 

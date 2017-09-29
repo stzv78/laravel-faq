@@ -21,7 +21,6 @@ class AnswerController extends Controller
     //сохраняем ответ
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'question_id' => 'required|unique:answers'
         ], [
@@ -30,13 +29,14 @@ class AnswerController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('question.index'))->withErrors($validator)->withInput();
+            return redirect(route('answer.create'))->withErrors($validator)->withInput();
         } else {
             $answer = Answer::create($request->all());
             //меняем статус вопроса
             $answer->question->status = $request->status ? $request->status : 1;
             $answer->question->save();
-            return redirect(route('question.index'))->with('message', 'Новый ответ успешно создан.');
+            session()->flash('success', 'Новый ответ успешно создан. Вопрос перемещен в список отвеченных');
+            return redirect(route('question.index'));
         }
     }
 
@@ -52,6 +52,7 @@ class AnswerController extends Controller
     public function update(Request $request, Answer $answer)
     {
         $answer->update($request->all());
+        session()->flash('success', 'Ответ успешно изменен.');
         return redirect(route('question.index'));
     }
 

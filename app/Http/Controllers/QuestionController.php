@@ -24,8 +24,6 @@ class QuestionController extends Controller
         $category = Category::find($id);
         $categories = Category::all();
         $questions = $category->question()->orderBy('created_at', 'DESC')->get();
-        //потом добавить пагинацию
-        //->paginate(10),
         $data = ['questions' => $questions, 'category' => $category, 'categories' => $categories, 'user' => $user];
         return view('templates.question.list', $data);
     }
@@ -58,8 +56,11 @@ class QuestionController extends Controller
 
         //пишем вопрос в БД со статусом 0 -- "не опубликован"
         Question::create($request->all());
-        $route = (session()->get('role') === 'admin') ? 'question.index' : 'index';
-        return redirect(route($route))->with('message', 'Новый вопрос успешно создан.');
+        if ((session()->get('role') === 'admin')) {
+            session()->flash('success', 'Новый вопрос успешно создан.');
+            return redirect(route('category.question', ['category' => $request->category_id ]));
+        } else
+            return redirect(route('index'));
     }
     //редактируем вопрос
     public function edit($id)
@@ -74,13 +75,15 @@ class QuestionController extends Controller
     public function update(Request $request, Question $question)
     {
         $question->update($request->all());
-        return redirect(route('category.index'))->with('message', 'Новый вопрос успешно создан.');
+        $category = Question::findOrFail($request->category_id);
+        session()->flash('success', "Вопрос в категории $category->name успешно изменен.");
+        return redirect(route('category.question', ['id' => $request->category_id]));
     }
 
     public function destroy(Question $question)
     {
         Question::destroy($question->id);
-        return redirect()->back()->with('message', 'Вопрос успешно удален.');
+        return redirect()->back()->with('success', 'Вопрос удален.');
     }
 
     public function changeStatusQuestion(Question $question, $status)
