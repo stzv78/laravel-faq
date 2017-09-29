@@ -1,8 +1,9 @@
 @extends('index')
 @section('content')
-    @if (session('message'))
-        <div class="alert alert-danger">
-            {{ session('message') }}
+
+    @if(session()->has('error'))
+        <div class='alert alert-danger fade in alert-dismissable'>
+            {{ session()->get('error') }}
         </div>
     @endif
 

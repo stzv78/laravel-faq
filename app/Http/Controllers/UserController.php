@@ -22,7 +22,8 @@ class UserController extends Controller
         } else {
             //пишем пользователя в сессию
             $request->session()->put(['role' => 'user']);
-            return redirect('log')->with('message', 'Пользователь не найден!');
+            session()->flash('error', 'Пользователь не найден!');
+            return redirect(route('log'));
         }
     }
 
@@ -59,7 +60,8 @@ class UserController extends Controller
 
         //пишем пользователя в БД
         User::create($request->all());
-        return redirect('admin')->with('message', 'Новая учетная запись успешно создана.');
+        session()->flash('success', 'Новая учетная запись успешно создана.');
+        return redirect(route('admin.list'));
     }
 
     //отдаем форму для смены пароля администратора
@@ -87,11 +89,11 @@ class UserController extends Controller
             if ($user) {
                 $user->password = ($request->password);
                 $user->save();
-                $message = 'Пароль успешно изменен!';
+                session()->flash('success', 'Пароль успешно изменен!');
             } else {
-                $message = 'Пользователь не найден!';
+                session()->flash('error', 'Пользователь не найден!');
             }
-            return redirect(route('admin.list'))->with('message', $message);
+            return redirect(route('admin.list'));
         }
     }
 
@@ -100,16 +102,16 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $answers = $user->answer()->get();
         //если есть ответы к вопросам, то перед удалением ответов изменить статус вопросов на "не опубликован"
-        if (isset($answers)) {
+        if ($answers) {
             foreach ($answers as $value) {
                 $answer = Answer::find($value->id);
                 $answer->question->status = '0';
                 $answer->question->save();
             }
         }
-
         User::destroy($id);
-        return redirect(route('admin.list'))->with('message', 'Администратор успешно удален!');
+        session()->flash('success', 'Администратор успешно удален!');
+        return redirect(route('admin.list'));
     }
 
     //выход администратора
@@ -120,8 +122,8 @@ class UserController extends Controller
             //удаление сессии
             session()->flush();
         }
-        return redirect(route('index'))->with('message', 'Сеанс работы завершен!');
+        session()->flash('success', 'Сеанс работы завершен!');
+        return redirect(route('index'));
     }
-
 }
 
