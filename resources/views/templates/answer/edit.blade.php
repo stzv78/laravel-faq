@@ -27,7 +27,7 @@
                                 <label for="answer_text" class="col-md-2 col-md-offset-1">Ответ:</label>
 
                                 <div class="col-md-8">
-                                    <textarea class="form-control" name="answer_text" value="">{{ $answer->answer_text }}
+                                    <textarea class="form-control" rows="13" name="answer_text" value="">{{ $answer->answer_text }}
                                </textarea>
                                 </div>
                             </div>

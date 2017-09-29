@@ -14,13 +14,14 @@
         .accordion-toggle.active:before{display:none;}
         .navbar-default .navbar-text {color: #ff0000;}
 
-        .hre:a:hover {
-        rgba(0, 0, 0, 0);
+        div strong {
+            color: red;
+        }
         }
     </style>
 </head>
 <body>
-
+<div class="container-fluid" style="width: 90%">
 <nav class="navbar navbar-default navbar-inverse divider-vertical">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -37,7 +38,6 @@
                             вопросами </a>
                     </div>
 
-                    <li><a href="{{  route ('register') }}"> Новый администратор</a></li>
                 <li><a href="{{  route ('admin.list') }}"> Все администраторы</a></li>
 
                 <p class="active navbar-text "><span class="glyphicon glyphicon-user"></span> Администратор: {{ session()->get('name') }}</p>
@@ -52,7 +52,6 @@
         </div>
     </div>
 </nav>
-<div>
 
     <div class = "container-fluid">
 
@@ -75,5 +74,6 @@
     <!-- Конец документа -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</div>
 </body>
 </html>

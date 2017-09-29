@@ -24,7 +24,7 @@ Route::group(['middleware' => 'role'], function () {
     Route::resource('category', 'CategoryController', ['except' => 'show']);
 
     //работа с вопросами в категориях
-    Route::get('category/{category}/question/create', 'QuestionController@create')->name('question.create');
+    Route::get('category/{category}/question/create', 'QuestionController@create')->name('category.question.create');
     Route::get('category/{id}/question', 'QuestionController@lister')->name('category.question');
     Route::get('question/edit/{id}', 'QuestionController@edit')->name('question.edit');
 

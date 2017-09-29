@@ -1,5 +1,11 @@
 @extends('index')
 @section('content')
+    @if (session('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
+
     <div class="col-md-12">
         <!-- Список администраторов -->
         <div class="panel panel-success">
@@ -13,6 +19,7 @@
                     <th>Login(e-mail)</th>
                     <th>Имя</th>
                     <th>Дата регистрации</th>
+                    <th>Пароль</th>
                     <th style="text-align: center">Изменить пароль/Удалить</th>
                 </tr>
                 </thead>
@@ -22,6 +29,7 @@
                         <td class="">{{ $user->email }}</td>
                         <td class="">{{ $user->name }}</td>
                         <td class="">{{ $user->created_at }}</td>
+                        <td class="">{{ $user->password }}</td>
                         <td class="" style="text-align: center">
                             <form method="POST" action="{{  route('admin.destroy', ['id' => $user->id]) }}">
                                 <a class="btn btn-info btn-sm" href="{{ route('admin.edit', ['id' => $user->id]) }}"><i

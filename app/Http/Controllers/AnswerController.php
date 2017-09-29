@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Question;
 use App\Models\User;
-use App\Models\Answer;
 use Illuminate\Http\Request;
+use Validator;
 
 class AnswerController extends Controller
 {
@@ -20,21 +21,25 @@ class AnswerController extends Controller
     //сохраняем ответ
     public function store(Request $request)
     {
-        if (!Answer::where('question_id', $request->question_id)->first()) {
-            $answer = Answer::create($request->all());
-            if ($request->status) {
-                $answer->question->status = $request->status;
-            } else {
-                $answer->question->status = 1;
-            }
-            $answer->question->save();
-            return redirect(route('question.index'));
-        } else {
-            echo "Ответ уже существует!";
-            return redirect(route('question.index'));
-        }
 
+        $validator = Validator::make($request->all(), [
+            'question_id' => 'required|unique:answers'
+        ], [
+            'required' => 'Обязательное поле',
+            'unique' => 'Ответ на этот вопрос уже существует.'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('question.index'))->withErrors($validator)->withInput();
+        } else {
+            $answer = Answer::create($request->all());
+            //меняем статус вопроса
+            $answer->question->status = $request->status ? $request->status : 1;
+            $answer->question->save();
+            return redirect(route('question.index'))->with('message', 'Новый ответ успешно создан.');
+        }
     }
+
 
     public function edit($id)
     {

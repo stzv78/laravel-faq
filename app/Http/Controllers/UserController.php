@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Category;
+use App\Models\User;
+use App\Models\Answer;
 use Illuminate\Http\Request;
-
+use Validator;
 
 class UserController extends Controller
 {
@@ -17,18 +18,11 @@ class UserController extends Controller
             //пишем администратора в сессию
             $request->session()->put(['id' => $user->id, 'name' => $user->name, 'role' => 'admin']);
             $categories = Category::all();
-            return view('main', ['categories' => $categories]);//отдаем Главную страницу администратора
+            return view('main', ['categories' => $categories]);//отдаем Главную страницу администратору
         } else {
             //пишем пользователя в сессию
             $request->session()->put(['role' => 'user']);
-            $data = [
-                'class' => 'danger',
-                'message' => 'Пользователь не найден!',
-                'text' => 'Войти снова',
-                'route' => '/log'
-            ];
-            // Генерим страницу с сообщением, что пользователь не найден, и надписью на ней и ссылкой куда нужно Войти снова
-            return view('templates.message', $data);
+            return redirect('log')->with('message', 'Пользователь не найден!');
         }
     }
 
@@ -48,26 +42,24 @@ class UserController extends Controller
     //сохраняем данные нового администратора
     public function store(Request $request)
     {
-        //есть ли такой e-mail в БД
-        if (User::where('email', $request->email)->first()) {
-            $data = [
-                'class' => 'danger',
-                'message' => 'Пользователь уже существует!',
-                'text' => 'Ok',
-                'route' => '/register'
-            ];
-        } else {
-            //пишем пользователя в БД
-            User::create($request->all());
-            $data = [
-                'class' => 'success',
-                'message' => 'Новая учетная запись успешно создана!',
-                'text' => 'Ok',
-                'route' => 'admin'
-            ];
+        $validator = Validator::make($request->all(), [
+            'name' => 'bail|required|max:255',
+            'email' => 'bail|required|email|max:255|unique:users,email',
+            'password' => 'bail|required|min:5|max:255',
+        ], [
+            'required' => 'Обязательное поле',
+            'unique' => 'Пользователь с таким именем уже существует',
+            'max' => 'Не более 255 символов',
+            'min' => 'Не менее 5 символов в пароле'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
-        // Отдаем страницу с сообщением
-        return view('templates.message', $data);
+
+        //пишем пользователя в БД
+        User::create($request->all());
+        return redirect('admin')->with('message', 'Новая учетная запись успешно создана.');
     }
 
     //отдаем форму для смены пароля администратора
@@ -77,58 +69,58 @@ class UserController extends Controller
         return view('templates.admin.edit', ['user' => $user]);
     }
 
-    //обновляем пароль (и имя при необходимости) в бд
+    //обновляем пароль в бд
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        if ($user) {
-            $user->password = $user->hash($request->password);
-            $user->save();
-            $data = [
-                'class' => 'success',
-                'message' => 'Пароль успешно изменен!',
-                'text' => 'Ok',
-                'route' => '/index'
-            ];
+        $validator = Validator::make($request->all(), [
+            'password' => 'bail|required|min:5|max:255',
+        ], [
+            'required' => 'Обязательное поле',
+            'max' => 'Не более 255 символов',
+            'min' => 'Не менее 5 символов в пароле'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
         } else {
-            $data = [
-                'class' => 'danger',
-                'message' => 'Ошибка данных!',
-                'text' => 'Ok',
-                'route' => '/index'
-            ];
+            $user = User::findOrFail($id);
+            if ($user) {
+                $user->password = ($request->password);
+                $user->save();
+                $message = 'Пароль успешно изменен!';
+            } else {
+                $message = 'Пользователь не найден!';
+            }
+            return redirect(route('admin.list'))->with('message', $message);
         }
-        return view('templates.message', $data);
     }
 
     public function destroy($id)
     {
+        $user = User::findOrFail($id);
+        $answers = $user->answer()->get();
+        //если есть ответы к вопросам, то перед удалением ответов изменить статус вопросов на "не опубликован"
+        if (isset($answers)) {
+            foreach ($answers as $value) {
+                $answer = Answer::find($value->id);
+                $answer->question->status = '0';
+                $answer->question->save();
+            }
+        }
+
         User::destroy($id);
-        $data = [
-            'class' => 'success',
-            'message' => 'Администратор успешно удален!',
-            'text' => 'Ok',
-            'route' => '/admin'
-        ];
-        return view('templates.message', $data);
+        return redirect(route('admin.list'))->with('message', 'Администратор успешно удален!');
     }
 
     //выход администратора
     public function logout()
     {
-        //проверяем
+        //проверяем администратора
         if (session()->get('role') === 'admin') {
             //удаление сессии
             session()->flush();
         }
-        $data = [
-            'class' => 'success',
-            'message' => 'Сеанс работы завершен!',
-            'text' => 'Ok',
-            'route' => '/index'
-        ];
-        // Отдаем страницу с сообщением
-        return view('templates.message', $data);
+        return redirect(route('index'))->with('message', 'Сеанс работы завершен!');
     }
 
 }

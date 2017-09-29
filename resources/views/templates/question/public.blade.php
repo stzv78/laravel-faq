@@ -5,15 +5,17 @@
         <div class="col-md-9">
 
             <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#panel1">Опубликованные вопросы</a></li>
-                <li><a data-toggle="tab" href="#panel2">Скрытые вопросы</a></li>
-                <li><a data-toggle="tab" href="#panel3">Вопросы без ответа</a></li>
+                <li class="{{ $status =='2' ? 'active' : ''}}"><a data-toggle="tab" href="#2">Опубликованные вопросы</a>
+                </li>
+                <li class="{{ $status =='1' ? 'active' : ''}}"><a data-toggle="tab" href="#1">Скрытые вопросы</a></li>
+                <li class="{{ $status =='0' ? 'active' : ''}}"><a data-toggle="tab" href="#0">Вопросы без ответа</a>
+                </li>
             </ul>
 
             <!--Секция с вопросами-ответами-->
             <div class="tab-content">
 
-                <div id="panel1" class="tab-pane fade in active">
+                <div id="2" class="tab-pane fade in active">
                     <h4 style="text-align: center">Опубликованные вопросы</h4>
                 @foreach ($categories as $category)
                     <!--Если есть опубликованные вопросы с ответами-->
@@ -61,7 +63,7 @@
                     @endforeach
                 </div>
 
-                <div id="panel2" class="tab-pane fade">
+                <div id="1" class="tab-pane fade">
                     <h4 style="text-align: center">Скрытые вопросы</h4>
                 @foreach ($categories as $category)
                     <!--Для каждой категории, если есть скрытые вопросы с ответами-->
@@ -109,10 +111,13 @@
                     @endforeach
                 </div>
 
-                <div id="panel3" class="tab-pane panel-body tab-content">
-
+                <div id="0" class="tab-pane">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"></h3>
+                    </div>
+                    <div class="panel-body">
                     <table class="table table-condensed" style="font-size: 13px; ">
-                        <tr>
+                        <tr class="active panel-title">
                             <th class="col-md-5">Вопрос</th>
                             <th class="col-md-4">Категория</th>
                             <th class="col-md-1"></th>
@@ -144,6 +149,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    </div>
                     <div class="panel-success panel-footer ">
                         <h4>Всего вопросов без ответа: {{ count($questions) }}</h4>
                     </div>

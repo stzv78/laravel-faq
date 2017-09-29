@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Validator;
 
 class CategoryController extends Controller
 {
@@ -36,26 +37,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //есть ли такая категория в БД
-        if (Category::where('name', $request->name)->first()) {
-            $data = [
-                'class' => 'danger',
-                'message' => 'Такая категория уже существует!',
-                'text' => 'Ok',
-                'route' => '/category'
-            ];
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255|unique:categories'
+        ], [
+            'required' => 'Обязательное поле',
+            'max' => 'Не более 255 символов',
+            'unique' => 'Такая категория уже существует.'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         } else {
-            //пишем категорию в БД
             Category::create($request->all());
-            $data = [
-                'class' => 'success',
-                'message' => 'Новая категория успешно создана!',
-                'text' => 'Ok',
-                'route' => '/category'
-            ];
+            return redirect('category')->with('message', 'Новый ответ успешно создан.');
         }
-        // Отдаем страницу с сообщением
-        return view('templates.message', $data);
     }
 
     /**

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use App\Models\Category;
 use App\Models\User;
-use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
+use Validator;
 
 class QuestionController extends Controller
 {
@@ -20,51 +20,46 @@ class QuestionController extends Controller
     }
     public function lister($id)
     {
+        $user = ((session()->get('role')) === 'admin') ? User::find(session()->get('id')) : '';
         $category = Category::find($id);
         $categories = Category::all();
         $questions = $category->question()->orderBy('created_at', 'DESC')->get();
         //потом добавить пагинацию
         //->paginate(10),
-        return view('templates.question.list',
-            ['questions' => $questions, 'category' => $category, 'categories' => $categories]);
+        $data = ['questions' => $questions, 'category' => $category, 'categories' => $categories, 'user' => $user];
+        return view('templates.question.list', $data);
     }
 
     //создаем новый вопрос
     public function create(Category $category)
     {
         $categories = Category::all();
-        if ((session()->get('role')) === 'admin') {
-            $user = User::find(session()->get('id'));
-        } else {
-            $user = null;
-        }
+        $user = ((session()->get('role')) === 'admin') ? User::find(session()->get('id')) : '';
         $data = ['category' => $category, 'categories' => $categories, 'user' => $user];
         return view('templates.question.create', $data);
     }
     //сохраняем вопрос
     public function store(Request $request)
     {
-        //есть ли такой вопрос в БД
-        if (Question::where('description', $request->description)->first()) {
-            $data = [
-                'class' => 'danger',
-                'message' => 'Такой вопрос уже существует!',
-                'text' => 'Ok',
-                'route' => '/index'
-            ];
-        } else {
-            //пишем вопрос в БД со статусом 0 -- "не опубликован"
-            Question::create($request->all());
-            $route = (session()->get('role') === 'admin') ? '/question/noanswered' : '/index';
-            $data = [
-               'class' => 'success',
-                'message' => 'Новый вопрос успешно создан!',
-                'text' => 'Ok',
-                'route' => $route
-            ];
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'category_id' => 'required|numeric',
+            'description' => 'required|unique:questions'
+        ], [
+            'required' => 'Обязательное поле',
+            'unique' => 'Такой вопрос уже существует',
+            'max' => 'Не более 255 символов'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
-        // Отдаем страницу с сообщением
-        return view('templates.message', $data);
+
+        //пишем вопрос в БД со статусом 0 -- "не опубликован"
+        Question::create($request->all());
+        $route = (session()->get('role') === 'admin') ? 'question.index' : 'index';
+        return redirect(route($route))->with('message', 'Новый вопрос успешно создан.');
     }
     //редактируем вопрос
     public function edit($id)
@@ -79,25 +74,13 @@ class QuestionController extends Controller
     public function update(Request $request, Question $question)
     {
         $question->update($request->all());
-        $data = [
-            'class' => 'success',
-            'message' => 'Вопрос успешно изменен!',
-            'text' => 'Ok',
-            'route' => '/category'
-        ];
-        return view('templates.message', $data);
+        return redirect(route('category.index'))->with('message', 'Новый вопрос успешно создан.');
     }
 
     public function destroy(Question $question)
     {
         Question::destroy($question->id);
-        $data = [
-            'class' => 'success',
-            'message' => 'Вопрос успешно удален!',
-            'text' => 'Ok',
-            'route' => '/category'
-        ];
-        return view('templates.message', $data);
+        return redirect()->back()->with('message', 'Вопрос успешно удален.');
     }
 
     public function changeStatusQuestion(Question $question, $status)
@@ -107,4 +90,5 @@ class QuestionController extends Controller
         $question->save();
         return redirect(route('question.index'));
     }
+
 }

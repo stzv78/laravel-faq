@@ -9,7 +9,7 @@
             <div class="panel-heading lead">{{ $category->name }}
                 <span class="badge">Всего вопросов: {{ count($questions) }}</span>
                 <a class="btn btn-sm btn-success pull-right"
-                   href="{{ route('question.create', ['category' => $category]) }}">Добавить вопрос </a>
+                   href="{{ route('category.question.create', ['category' => $category] )}}">Добавить вопрос </a>
             </div>
             <table class="table table-condensed" style="font-size: 14px;">
                 <tbody>
