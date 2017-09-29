@@ -7,7 +7,7 @@
                     <div class="panel-heading">Изменить категорию</div>
                     <div class="panel-body">
                         <form class="form-horizontal" method="POST"
-                              action="{{ route('category.update', ['id' => $category->id] )}}">
+                              action="{{ route('category.update', ['id' => $category->id ])}}">
                             {{ csrf_field() }}
 
                             <div class="form-group">
@@ -15,7 +15,14 @@
 
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control" name="name"
-                                           value="{{ $category->name }}">
+                                           value="{{ $category->name }}" required>
+
+                                    @if ($errors->has('name'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
+
                                 </div>
                             </div>
 

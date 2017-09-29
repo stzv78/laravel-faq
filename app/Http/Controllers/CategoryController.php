@@ -49,7 +49,8 @@ class CategoryController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
             Category::create($request->all());
-            return redirect('category')->with('message', 'Новый ответ успешно создан.');
+            session()->flash('success', 'Категория успешно создана.');
+            return redirect('category');
         }
     }
 
@@ -74,14 +75,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $category->update($request->all());
-        $data = [
-            'class' => 'success',
-            'message' => 'Категория успешно изменена!',
-            'text' => 'Ok',
-            'route' => '/category'
-        ];
-        return view('templates.message', $data);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255|unique:categories'
+        ], [
+            'required' => 'Обязательное поле',
+            'max' => 'Не более 255 символов',
+            'unique' => 'Такая категория уже существует.'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            $category->update($request->all());
+            session()->flash('success', 'Категория успешно изменена.');
+            return redirect('category');
+        }
     }
 
     /**
@@ -93,12 +101,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         Category::destroy($category->id);
-        $data = [
-            'class' => 'success',
-            'message' => 'Категория успешно удалена!',
-            'text' => 'Ok',
-            'route' => '/category'
-        ];
-        return view('templates.message', $data);
+        session()->flash('success', 'Категория успешно удалена.');
+        return redirect('category');
     }
 }

@@ -13,7 +13,13 @@
                                 <label for="name" class="col-md-4 control-label">Название</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" required>
+                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required>
+
+                                    @if ($errors->has('name'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 
@@ -22,7 +28,7 @@
                                     <button type="submit" class="btn btn-primary">
                                         Создать
                                     </button>
-                                    <a href="{{ url('/category') }}" class="cancel">Отмена</a>
+                                    <a href="{{ route('category.index') }}" class="cancel">Отмена</a>
                                 </div>
                             </div>
                         </form>
