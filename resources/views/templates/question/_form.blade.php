@@ -13,9 +13,9 @@
                 @endif
 
                 @if ($errors->has('username'))
-                    <div class="alert alert-danger">
-                        {{ $errors->first('username') }}
-                    </div>
+                    <span class="help-block">
+                        <strong>{{ $errors->first('username') }}</strong>
+                    </span>
                 @endif
 
             </div>
@@ -31,9 +31,9 @@
             </div>
 
             @if ($errors->has('email'))
-                <div class="alert alert-danger">
-                    {{ $errors->first('email') }}
-                </div>
+                <span class="help-block">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </span>
             @endif
 
             <div class="form-group">
@@ -57,9 +57,9 @@
                           value="{{ old('description') }}" required></textarea>
             </div>
             @if ($errors->has('description'))
-                <div class="alert alert-danger">
-                    {{ $errors->first('description') }}
-                </div>
+                <span class="help-block">
+                    <strong>{{ $errors->first('description') }}</strong>
+                </span>
             @endif
 
             <div class="col-md-offset-2">

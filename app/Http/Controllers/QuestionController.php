@@ -75,9 +75,8 @@ class QuestionController extends Controller
     public function update(Request $request, Question $question)
     {
         $question->update($request->all());
-        $category = Question::findOrFail($request->category_id);
-        session()->flash('success', "Вопрос в категории $category->name успешно изменен.");
-        return redirect(route('category.question', ['id' => $request->category_id]));
+        session()->flash('success', "Вопрос в категории успешно изменен.");
+        return redirect(route('category.question', ['id' => $question->category_id]));
     }
 
     public function destroy(Question $question)

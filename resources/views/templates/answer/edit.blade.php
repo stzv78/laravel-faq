@@ -27,8 +27,15 @@
                                 <label for="answer_text" class="col-md-2 col-md-offset-1">Ответ:</label>
 
                                 <div class="col-md-8">
-                                    <textarea class="form-control" rows="13" name="answer_text" value="">{{ $answer->answer_text }}
-                               </textarea>
+                                    <textarea class="form-control" rows="13" name="answer_text" placeholder="Введите ответ" value="{{ old('answer_text') }}" required>{{ $answer->answer_text }}
+                                    </textarea>
+
+                                    @if ($errors->has('answer_text'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('answer_text') }}</strong>
+                                        </span>
+                                    @endif
+
                                 </div>
                             </div>
 

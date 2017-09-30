@@ -6,9 +6,10 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">Ответить пользователю</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('answer.store') }}">
-                            <div class="form-group">
 
+                        <form class="form-horizontal" method="POST" action="{{ route('answer.store') }}">
+
+                            <div class="form-group">
                                 <div class="col-md-8 col-md-offset-3">
                                     <span class="label label-info "> {{ $question->username }}
                                         , {{ $question->email }} </span>
@@ -26,8 +27,14 @@
                                 <label for="answer_text" class="col-md-2 col-md-offset-1">Ответ:</label>
 
                                 <div class="col-md-8">
-                                    <textarea class="form-control" name="answer_text" placeholder="Ваш ответ" required>
-                               </textarea>
+                                    <textarea class="form-control" name="answer_text" placeholder="Ваш ответ"
+                                              value="{{ old('answer_text') }}" required></textarea>
+
+                                    @if ($errors->has('answer_text'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('answer_text') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 
@@ -46,6 +53,7 @@
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>

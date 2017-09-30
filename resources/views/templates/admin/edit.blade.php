@@ -17,6 +17,7 @@
                                     {{ $user->name }}
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="email" class="col-md-4 control-label">Login:</label>
 
